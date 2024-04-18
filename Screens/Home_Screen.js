@@ -13,13 +13,15 @@ import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
 
   const navigateToClassificationScreen = () => {
     navigation.navigate("CameraScreen");
+  };
+  const navigateToDiseaseScreen = () => {
+    navigation.navigate("DiseaseScreen");
   };
 
   const navigateToNearMe = () => {
@@ -51,21 +53,21 @@ const HomeScreen = () => {
   const DATA = [
     {
       id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-      title: "Shop Now",
+      title: "Disease 1",
       subtitle: "Second ItemSecond ItemSecond Item",
       buttonTxt: "Shop now",
       img: require("../assets/favicon.png"),
     },
     {
       id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-      title: "Near ME",
+      title: "Disease 2",
       subtitle: "Second ItemSecond ItemSecond Item",
       buttonTxt: "Near Me",
       img: require("../assets/favicon.png"),
     },
     {
       id: "58694a0f-3da1-471f-bd96-145571e29d72",
-      title: "Doctor",
+      title: "Disease 3",
       subtitle: "Second ItemSecond ItemSecond Item",
       buttonTxt: "Doctor",
       img: require("../assets/favicon.png"),
@@ -80,7 +82,7 @@ const HomeScreen = () => {
           <Text style={styles.subtilte}>{item.item?.subtitle}</Text>
           <TouchableOpacity
             style={styles.buttonSlider}
-            onPress={navigateToClassificationScreen}
+            onPress={navigateToDiseaseScreen}
           >
             <Text style={styles.buttonTextslider}>{item.item?.buttonTxt}</Text>
           </TouchableOpacity>

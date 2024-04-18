@@ -3,6 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "./Screens/Home_Screen";
 import ImageClassifier from "./Screens/Diagnose_Screen";
+import DiseaseScreen from "./Screens/Disease_Screen";
 
 
 
@@ -20,6 +21,11 @@ export default function App() {
         <Stack.Screen
           name="CameraScreen"
           component={ImageClassifier}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DiseaseScreen"
+          component={DiseaseScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
