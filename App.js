@@ -25,7 +25,7 @@ export default function App() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="CameraScreen"
+          name="DiagnoseScreen"
           component={ImageClassifier}
           options={{ headerShown: false }}
         />

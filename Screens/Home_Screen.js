@@ -10,15 +10,13 @@ import {
   Image,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { Ionicons } from "@expo/vector-icons";
-import { Entypo } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
+import { Ionicons, Entypo, FontAwesome } from "@expo/vector-icons";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
 
   const navigateToClassificationScreen = () => {
-    navigation.navigate("CameraScreen");
+    navigation.navigate("DiagnoseScreen");
   };
   const navigateToDiseaseScreen = () => {
     navigation.navigate("DiseaseScreen");
