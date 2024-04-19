@@ -51,15 +51,15 @@ const HomeScreen = () => {
   const DATA = [
     {
       id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-      title: "Disease 1",
-      subtitle: "Second ItemSecond ItemSecond Item",
-      buttonTxt: "Shop now",
-      img: require("../assets/favicon.png"),
+      title: "Tomato Late Blight",
+      subtitle: "Tomato Late blight is a tomato disease that starts to show symptoms in April and May. To avoid this disease you have to ",
+      buttonTxt: "Learn More",
+      img: require("../assets/disease-1.jpg"),
     },
     {
       id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-      title: "Disease 2",
-      subtitle: "Second ItemSecond ItemSecond Item",
+      title: "Tomato Early Blight",
+      subtitle: "Tomato Early blight is a tomato disease that starts to show symptoms in April and May. To avoid this disease you have to",
       buttonTxt: "Near Me",
       img: require("../assets/favicon.png"),
     },
@@ -72,10 +72,9 @@ const HomeScreen = () => {
     },
   ];
   const Item = ({ item }) => {
-    // console.log("sssss", item.item?.title);
     return (
       <View style={styles.item}>
-        <View className="w-[70%]">
+        <View style={styles.textContainer}>
           <Text style={styles.title}>{item.item?.title}</Text>
           <Text style={styles.subtilte}>{item.item?.subtitle}</Text>
           <TouchableOpacity
@@ -85,9 +84,9 @@ const HomeScreen = () => {
             <Text style={styles.buttonTextslider}>{item.item?.buttonTxt}</Text>
           </TouchableOpacity>
         </View>
-        <View style={styles.sliderImg}>
-          <Image className="w-full" source={item.item?.img}  resizeMode="contain"/>
-        </View>
+        
+          <Image style={styles.imageslider} source={item.item?.img}  resizeMode="cover"/>
+  
       </View>
     );
   };
@@ -128,15 +127,17 @@ const HomeScreen = () => {
               keyExtractor={(item) => item.id}
             />
           </View>
+
           {/* Components */}
-          <View style={styles.GridConatiner}>
-            <View style={styles.MainNavicationGrid}>
+          
+            <View style={styles.btnContainer}>
+
               <TouchableOpacity
                 style={styles.button}
                 onPress={navigateToClassificationScreen}
               >
                 <View style={styles.ButtonFlex}>
-                  <Ionicons name="scan" size={24} color="#FFFFFF" />
+                  <Ionicons name="scan" size={40} color="#FFFFFF" />
                   <Text style={styles.buttonText}>Crop Doctor</Text>
                 </View>
               </TouchableOpacity>
@@ -146,13 +147,17 @@ const HomeScreen = () => {
                 onPress={navigateToNearMe}
               >
                 <View style={styles.ButtonFlex}>
-                  <Entypo name="shop" size={24} color="#FFFFFF" />
+                  <Entypo name="shop" size={40} color="#FFFFFF" />
                   <Text style={styles.buttonText}>Near Me</Text>
                 </View>
               </TouchableOpacity>
             </View>
-          </View>
+            </View>
+
+        <View>
+          
         </View>
+        
       </ImageBackground>
     </SafeAreaView>
   );
@@ -178,7 +183,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
-
+  textContainer:{
+    flex: 1
+  },
+  imageslider:{
+    height:100,
+    width:100,
+  },
   greeting: {
     fontWeight: "bold",
     paddingHorizontal: 7,
@@ -210,7 +221,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 15,
-    // color:'#000'
+    fontWeight:'bold'
     
   },
   subtilte: {
@@ -224,15 +235,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 6,
-    marginVertical: 4,
+    marginVertical: 7,
   },
   buttonTextslider: {
     color: "black",
   },
   sliderImg: {
-    width: 100,
-
-    height: 100,
+    width: 200,
+    height: 50,
   },
   main: {
     flex: 1,
@@ -242,14 +252,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "rgba(0, 0, 0, 0.7)",
   },
-  GridConatiner: {
-    padding: 20,
-    marginTop: 15,
-  },
-  MainNavicationGrid: {
+  btnContainer:{
+    justifyContent: "space-evenly",
+    alignItems: "center",
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "space-between",
+    marginTop: 10,
+    width:'100%',
+    height:'100%',
   },
   button: {
     backgroundColor: "#4DB129",
@@ -258,8 +268,8 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     elevation: 3,
     marginTop: 10,
-    width: "30%",
-    height: "60%",
+    width: "40%",
+    height: "20%",
     textAlign: "center",
   },
   ButtonFlex: {
@@ -268,7 +278,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   buttonText: {
-    fontSize: 11,
+    fontSize: 17,
     fontWeight: "bold",
     color: "white",
     textAlign: "center",

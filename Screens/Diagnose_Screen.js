@@ -364,9 +364,7 @@ const ImageClassifier = () => {
       {label ? (
         <View style={styles.resultContainer}>
           <Text style={styles.resultText}>Your Crop is affected by <Text style={styles.label}>{label}</Text> and I am <Text style={styles.confidencelabel}>{parseFloat(result*100).toFixed(0) + "%"}</Text> Confident</Text>
-          {/* <Text style={styles.resultText}>
-            {parseFloat(result*100).toFixed(0) + "%"}
-          </Text> */}
+          
         </View>
       ) : loading ? (
         <ActivityIndicator size="large" color="#fff" />
