@@ -117,7 +117,7 @@ const HomeScreen = () => {
       </View>
 
       <ImageBackground
-        source={require("../assets/favicon.png")}
+        source={require("./farmer.png")}
         style={styles.main}
       >
         <View style={styles.overlay}>

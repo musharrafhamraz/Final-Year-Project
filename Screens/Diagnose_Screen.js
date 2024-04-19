@@ -9,17 +9,21 @@ import {
   Dimensions,
   ImageBackground,
   StatusBar,
+  Alert,
 } from "react-native";
 import { launchCameraAsync, launchImageLibraryAsync } from "expo-image-picker";
+import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import axios from "axios";
 
 const { height, width } = Dimensions.get("window");
 
 const ImageClassifier = () => {
+
+  const navigation = useNavigation();
   const [result, setResult] = useState("");
   const [label, setLabel] = useState("");
-  //   const [image, setImage] = useState(require('./applescab.jpg')); // Replace with your default image
+  const [image, setImage] = useState(null); // Replace with your default image
 
   useEffect(() => {
     StatusBar.setBarStyle("light-content");
@@ -65,7 +69,6 @@ const ImageClassifier = () => {
       const fileName = uriParts[uriParts.length - 1];
 
       const formData = new FormData();
-      console.log(formData);
       formData.append("file", {
         uri: result.assets[0].uri,
         type: "image/jpeg",
@@ -73,7 +76,7 @@ const ImageClassifier = () => {
       });
 
       const response = await axios.post(
-        "https://cnn-model-api-deployment-ac2b40fcf26d.herokuapp.com/predict",
+        "https://cnn-model-api-deployment-ac2b40fcf26d.herokuapp.com/predict1",
         formData,
         {
           headers: {
@@ -85,7 +88,6 @@ const ImageClassifier = () => {
       );
 
       const { data } = response;
-      console.log("data", { data });
 
       if (data && data.class) {
         setLabel(data.class);
@@ -94,16 +96,36 @@ const ImageClassifier = () => {
         setLabel("Failed to predict");
       }
     } catch (error) {
-      // Handle errors
       if (error.response) {
-        // Server responded with a status code outside of 2xx
-        console.error("Server responded with error:", error.response.data);
+        // console.error("Server responded with error:", error.response.data);
+        Alert.alert('Server Error', 'Server Responded with Error\nPlease TRY AGAIN', [
+          {
+            text: 'Cancel',
+            onPress: () => navigation.navigate("DiagnoseScreen"),
+            style: 'cancel',
+          },
+          {text: 'OK', onPress: () => navigation.navigate("HomeScreen"),},
+        ]);
       } else if (error.request) {
-        // The request was made but no response was received
-        console.error("No response received:", error.request);
+        // console.error("No response received:", error.request);
+        Alert.alert('Server Error', 'Please TRY AGAIN', [
+          {
+            text: 'Cancel',
+            onPress: () => navigation.navigate("DiagnoseScreen"),
+            style: 'cancel',
+          },
+          {text: 'OK', onPress: () => navigation.navigate("HomeScreen"),},
+        ]);
       } else {
-        // Other errors
-        console.error("Error:", error.message);
+        // console.error("Error:", error.message);
+        Alert.alert('Error', 'Please TRY AGAIN', [
+          {
+            text: 'Cancel',
+            onPress: () => navigation.navigate("DiagnoseScreen"),
+            style: 'cancel',
+          },
+          {text: 'OK', onPress: () => navigation.navigate("HomeScreen"),},
+        ]);
       }
     }
   };
@@ -111,11 +133,12 @@ const ImageClassifier = () => {
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={{ uri: "background" }}
+        source={require('./farmer.png')}
         style={styles.backgroundImage}
+        
       />
       <Text style={styles.title}>Potato Disease Prediction App</Text>
-      {/* {image && <Image source={{ uri: image }} style={styles.image} />} */}
+      {image && <Image source={{ uri: image }} style={styles.image} />}
       <View style={styles.resultContainer}>
         <Text style={styles.resultText}>Label: {label}</Text>
         <Text style={styles.resultText}>
@@ -146,9 +169,9 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {
     position: "absolute",
-    width: "100%",
-    height: "100%",
-    zIndex: -1,
+    width: 800,
+    height: 800,
+    // zIndex: 0,
   },
   title: {
     fontSize: 30,
