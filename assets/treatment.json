@@ -1,0 +1,15 @@
+[
+    {
+      "disease_name": "Potato___Early_blight",
+      "treatment": "Prune, apply fungicides, irrigate properly, space trees, use resistant varieties, and prune seasonally."
+    },
+    {
+      "disease_name": "Potato___healthy",
+      "treatment": "Prune, use fungicide sprays, water properly, space trees, consider resistant varieties, and monitor regularly."
+    },
+    {
+      "disease_name": "Potato___Late_blightt",
+      "treatment": "Remove infected leaves, apply fungicides, water adequately, mulch, choose resistant varieties, and clean after harvest."
+    }
+  ]
+  

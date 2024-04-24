@@ -12,7 +12,10 @@
       "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": [
-      "**/*"
+      "./assets/treatment-book.csv"
+    ],
+    "assets": [
+      "./assets/treatment-book.csv"
     ],
     "ios": {
       "supportsTablet": true

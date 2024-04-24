@@ -1,18 +1,34 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
+import { useFonts } from 'expo-font';
+
 
 const SplashScreen = ({ navigation }) => {
+  const [fontsLoaded, fontError] = useFonts({
+    'Merriweather-Bold': require('../assets/fonts/Merriweather-Bold.ttf'),
+    'Montserrat-Bold': require('../assets/fonts/Montserrat-Bold.ttf')
+  });
+
   useEffect(() => {
     // Navigate to another screen after 2 seconds
     const timer = setTimeout(() => {
       navigation.replace('HomeScreen'); // Replace 'Home' with the name of your destination screen
-    }, 2000);
+    }, 10000);
 
     return () => clearTimeout(timer); // Clear the timer when component unmounts
   }, [navigation]);
 
+  // const onLayoutRootView = useCallback(async () => {
+  //   if (fontsLoaded || fontError) {
+  //     await SplashScreen.hideAsync();
+  //   }
+  // }, [fontsLoaded, fontError]);
+
+  if (!fontsLoaded && !fontError) {
+    return null;
+  }
   return (
-    <View style={styles.container}>
+    <View style={styles.container} >
       <Image
         source={require('./farmer.png')}
         style={styles.image}
@@ -40,9 +56,10 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 24,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     marginBottom: 10,
     letterSpacing:2,
+    fontFamily: 'Merriweather-Bold'
   },
   description: {
     fontSize: 18,
@@ -50,6 +67,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     lineHeight:25,
     letterSpacing:2,
+    fontFamily: 'Montserrat-Bold'
   },
   button: {
     backgroundColor: 'blue',
