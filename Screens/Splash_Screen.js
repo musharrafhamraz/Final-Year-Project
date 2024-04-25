@@ -13,7 +13,7 @@ const SplashScreen = ({ navigation }) => {
     // Navigate to another screen after 2 seconds
     const timer = setTimeout(() => {
       navigation.replace('HomeScreen'); // Replace 'Home' with the name of your destination screen
-    }, 10000);
+    }, 2000);
 
     return () => clearTimeout(timer); // Clear the timer when component unmounts
   }, [navigation]);
