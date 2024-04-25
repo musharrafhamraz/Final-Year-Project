@@ -6,18 +6,18 @@ const { width: screenWidth } = Dimensions.get('window');
 
 const ImageCarousel = ({ images }) => {
   const renderImage = ({ item }) => (
-    <Image source={item} style={{ width: '100%', height: '100%' }} resizeMode="cover" />
+    <Image source={item} style={{ width: '100%', height: '100%', borderRadius:25, marginHorizontal: 15,  }} resizeMode="cover" />
   );
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, marginVertical:25, borderRadius:25}}>
       <Carousel
         data={images}
         renderItem={renderImage}
         sliderWidth={screenWidth}
         itemWidth={screenWidth}
-        loop={true}
-        autoplay={true}
+        loop={false}
+        autoplay={false}
         autoplayDelay={500}
         autoplayInterval={3000}
       />

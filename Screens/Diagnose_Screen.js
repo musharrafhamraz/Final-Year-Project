@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, ActivityIndicator, Alert, StyleSheet, Platform, StatusBar } from 'react-native';
+import { View, Text, TouchableOpacity, ActivityIndicator, Alert, StyleSheet, Platform, StatusBar, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { launchCameraAsync, launchImageLibraryAsync } from 'expo-image-picker';
 import axios from 'axios';
@@ -24,6 +24,12 @@ const ImageClassifier = () => {
   useEffect(() => {
     StatusBar.setBarStyle("light-content");
   }, []);
+
+  const navigateToDiagnoseScreen = () => {
+    navigation.navigate("DiagnoseScreen");
+    setLabel('');
+    setLoading(false);
+  };
 
   const images = [
     require('../assets/images/pic1.jpg'),
@@ -109,28 +115,28 @@ const ImageClassifier = () => {
         Alert.alert('Server Error', 'Server Responded with Error\nPlease TRY AGAIN', [
           {
             text: 'Cancel',
-            onPress: () => navigation.navigate("DiagnoseScreen"),
+            onPress: () => {navigateToDiagnoseScreen},
             style: 'cancel',
           },
-          { text: 'OK', onPress: () => navigation.navigate("HomeScreen"), },
+          { text: 'OK', onPress: () => {navigateToDiagnoseScreen}, },
         ]);
       } else if (error.request) {
         Alert.alert('Server Error', 'Please TRY AGAIN', [
           {
             text: 'Cancel',
-            onPress: () => navigation.navigate("DiagnoseScreen"),
+            onPress: () => {navigateToDiagnoseScreen},
             style: 'cancel',
           },
-          { text: 'OK', onPress: () => navigation.navigate("HomeScreen"), },
+          { text: 'OK', onPress: () => {navigateToDiagnoseScreen}, },
         ]);
       } else {
         Alert.alert('Error', 'Please TRY AGAIN', [
           {
             text: 'Cancel',
-            onPress: () => navigation.navigate("DiagnoseScreen"),
+            onPress: () => {navigateToDiagnoseScreen},
             style: 'cancel',
           },
-          { text: 'OK', onPress: () => navigation.navigate("HomeScreen"), },
+          { text: 'OK', onPress: () => {navigateToDiagnoseScreen}, },
         ]);
       }
     }
@@ -158,8 +164,15 @@ const ImageClassifier = () => {
 
       {label ? (
         <View style={styles.resultContainer}>
+          <TouchableOpacity style={styles.backButton} onPress={navigateToDiagnoseScreen}>
+            <Ionicons name="arrow-back-sharp" size={34} color="white" />
+          </TouchableOpacity>
           <Text style={styles.resultText}>Your Crop is affected by <Text style={styles.label}>{label}</Text> and I am <Text style={styles.confidencelabel}>{parseFloat(result * 100).toFixed(0) + "%"}</Text> Confident</Text>
+          <View style={styles.divider} />
           <Text style={styles.resultText}>Treatment: {treatment}</Text>
+          
+            
+          
         </View>
       ) : loading ? (
         <ActivityIndicator style={styles.indicator} size="large" color="#fff" />
@@ -196,6 +209,16 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     margin: 10,
     justifyContent: 'center',
+    alignItems:'center',
+    flexDirection: 'row'
+  },
+  backButton:{
+    // position: 'absolute',
+    width:'13%',
+    marginBottom:15,
+    backgroundColor:'#548054',
+    padding: 5,
+    borderRadius:50,
   },
   capturedImage: {
     width: '100%',
@@ -227,7 +250,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(255, 255, 255, 0.8)",
     paddingHorizontal: 20,
     paddingVertical: 20,
-    borderRadius: 10,
+    borderRadius: 25,
     marginBottom: 20,
   },
   resultText: {
@@ -245,6 +268,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#267a11",
     padding: 20,
     borderRadius: 10,
+  },
+  divider: {
+    borderBottomColor: 'black',
+    borderBottomWidth: 1,
+    marginVertical: 10,
   },
   indicator: {
     flex: 1,

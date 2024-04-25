@@ -12,17 +12,12 @@ const SplashScreen = ({ navigation }) => {
   useEffect(() => {
     // Navigate to another screen after 2 seconds
     const timer = setTimeout(() => {
-      navigation.replace('HomeScreen'); // Replace 'Home' with the name of your destination screen
+      navigation.replace('DiagnoseScreen'); 
     }, 2000);
 
-    return () => clearTimeout(timer); // Clear the timer when component unmounts
+    return () => clearTimeout(timer); 
   }, [navigation]);
 
-  // const onLayoutRootView = useCallback(async () => {
-  //   if (fontsLoaded || fontError) {
-  //     await SplashScreen.hideAsync();
-  //   }
-  // }, [fontsLoaded, fontError]);
 
   if (!fontsLoaded && !fontError) {
     return null;
@@ -30,7 +25,7 @@ const SplashScreen = ({ navigation }) => {
   return (
     <View style={styles.container} >
       <Image
-        source={require('./farmer.png')}
+        source={require('../assets/images/farmer.png')}
         style={styles.image}
         resizeMode="cover"
       />
@@ -56,7 +51,6 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 24,
-    // fontWeight: 'bold',
     marginBottom: 10,
     letterSpacing:2,
     fontFamily: 'Merriweather-Bold'
