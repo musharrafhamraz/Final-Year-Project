@@ -21,10 +21,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.musharrafhamraz.finalproject"
     },
     "web": {
       "favicon": "./assets/images/icon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "5c7ac417-23cb-4759-a9ff-a59672444d71"
+      }
     }
   }
 }
