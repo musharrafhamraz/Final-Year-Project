@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, ActivityIndicator, Alert, StyleSheet, Platform, StatusBar, Button } from 'react-native';
+import { View, Text, TouchableOpacity, ActivityIndicator, Alert, StyleSheet, Platform, StatusBar, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { launchCameraAsync, launchImageLibraryAsync } from 'expo-image-picker';
 import axios from 'axios';
 import { Ionicons } from '@expo/vector-icons';
-import treatmentData from '../assets/treatment.json';
+import treatmentData from '../assets/treatments.json';
 import { useFonts } from 'expo-font';
 import ImageCarousel from './ImageC';
 
@@ -14,6 +14,7 @@ const ImageClassifier = () => {
   const [label, setLabel] = useState("");
   const [loading, setLoading] = useState(false);
   const [treatment, setTreatment] = useState("");
+  const [Symptoms, setSymptoms] = useState("");
   const [fontsLoaded, fontError] = useFonts({
     'Merriweather-Bold': require('../assets/fonts/Merriweather-Bold.ttf'),
     'Montserrat-Bold': require('../assets/fonts/Montserrat-Bold.ttf')
@@ -144,8 +145,10 @@ const ImageClassifier = () => {
 
   const extractTreatment = (predictedLabel) => {
     const foundDisease = treatmentData.find(disease => disease.disease_name === predictedLabel);
+    const foundsymptoms = treatmentData.find(disease=> disease.disease_name === predictedLabel)
     if (foundDisease) {
       setTreatment(foundDisease.treatment);
+      setSymptoms(foundsymptoms.symptoms)
     } else {
       setTreatment("Treatment not found"); 1
     }
@@ -168,8 +171,18 @@ const ImageClassifier = () => {
             <Ionicons name="arrow-back-sharp" size={34} color="white" />
           </TouchableOpacity>
           <Text style={styles.resultText}>Your Crop is affected by <Text style={styles.label}>{label}</Text> and I am <Text style={styles.confidencelabel}>{parseFloat(result * 100).toFixed(0) + "%"}</Text> Confident</Text>
+          <ScrollView showsVerticalScrollIndicator={false}>
+          
+          <Text style={styles.resultText}>Symptoms</Text>
           <View style={styles.divider} />
-          <Text style={styles.resultText}>Treatment: {treatment}</Text>
+          <Text style={styles.resultTextlong}>{Symptoms}</Text>
+          <View style={styles.divider} />
+          <Text style={styles.resultText}>Treatment</Text>
+          <View style={styles.divider} />
+          <Text style={styles.resultTextlong}>{treatment}</Text>
+
+  
+          </ScrollView>
           
             
           
@@ -213,7 +226,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   backButton:{
-    // position: 'absolute',
     width:'13%',
     marginBottom:15,
     backgroundColor:'#548054',
@@ -256,6 +268,10 @@ const styles = StyleSheet.create({
   resultText: {
     fontSize: 18,
     fontWeight: "bold",
+    marginBottom: 10,
+  },
+  resultTextlong:{
+    fontSize: 18,
     marginBottom: 5,
   },
   buttonContainer: {
