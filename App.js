@@ -3,6 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ImageClassifier from "./Screens/Diagnose_Screen";
 import SplashScreen from "./Screens/Splash_Screen";
+import History from "./Screens/history";
 
 
 const Stack = createNativeStackNavigator();
@@ -19,6 +20,11 @@ export default function App() {
         <Stack.Screen
           name="DiagnoseScreen"
           component={ImageClassifier}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="HistoryScreen"
+          component={History}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
