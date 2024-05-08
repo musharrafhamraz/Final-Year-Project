@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, Alert, StatusBar, Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -10,7 +10,9 @@ const History = () => {
   const [savedData, setSavedData] = useState([]);
 
   useEffect(() => {
+    StatusBar.setBarStyle("light-content");
     getData();
+
   }, []);
 
   const getData = async () => {
@@ -110,14 +112,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#bf9522',
+    backgroundColor: '#267a11',
     paddingHorizontal: 20,
-    paddingTop: 40,
+    paddingTop: 16,
     paddingBottom: 20,
   },
   heading: {

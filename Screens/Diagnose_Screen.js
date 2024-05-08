@@ -11,6 +11,7 @@ import {
   FlatList,
   Image,
   ScrollView,
+  ImageBackground,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { launchCameraAsync, launchImageLibraryAsync } from "expo-image-picker";
@@ -33,9 +34,9 @@ const ImageClassifier = () => {
     "Montserrat-Bold": require("../assets/fonts/Montserrat-Bold.ttf"),
   });
 
-  // useEffect(() => {
-  //   StatusBar.setBarStyle("light-content");
-  // }, []);
+  useEffect(() => {
+    StatusBar.setBarStyle("light-content");
+  }, []);
 
   const navigateToDiagnoseScreen = () => {
     navigation.navigate("DiagnoseScreen");
@@ -236,71 +237,71 @@ const ImageClassifier = () => {
       buttonTxt: "Details",
       img: require("../assets/images/powderyMildew.jpg"),
       details: "Powdery mildew is a fungal disease caused by various species of fungi in the order Erysiphales. It thrives in warm, humid conditions and can affect a wide range of plants including roses, cucumbers, squash, and lilacs. The white powdery patches typically develop on the upper surface of leaves, although they can also occur on stems and flowers. As the disease progresses, the affected leaves may become distorted and eventually die. Control measures include planting resistant varieties, ensuring good air circulation around plants, and applying fungicides if necessary."
-      },
-      {
+    },
+    {
       id: "2",
       title: "Leaf Spot",
       subtitle: "Leaf spot manifests as dark or discolored spots on leaves, often with a defined border.",
       buttonTxt: "Details",
       img: require("../assets/images/leaf-spot.jpg"),
       details: "Leaf spot is a common fungal disease caused by various species of fungi, including Alternaria, Septoria, and Cercospora. It often occurs during periods of high humidity and can affect a wide range of plants, including vegetables, ornamentals, and trees. Leaf spot typically appears as dark or discolored spots on leaves, which may have a defined border. In severe cases, the spots may coalesce, causing extensive leaf damage and defoliation. Control measures include removing and destroying infected plant material, practicing good garden hygiene, and applying fungicides as needed."
-      },
-      {
+    },
+    {
       id: "3",
       title: "Rust",
       subtitle: "Rust appears as orange, yellow, or brown powdery or pustular growths on leaves and stems.",
       buttonTxt: "Details",
       img: require("../assets/images/rust.jpg"),
       details: "Rust is a fungal disease caused by various species of fungi in the order Pucciniales. It affects a wide range of plants, including ornamentals, vegetables, and grains. Rust typically appears as orange, yellow, or brown powdery or pustular growths on leaves and stems. These growths contain masses of spores that can spread the disease to nearby plants. Rust infections can weaken plants, reduce yields, and affect the aesthetic appeal of ornamental plants. Control measures include planting resistant varieties, removing and destroying infected plant material, and applying fungicides if necessary."
-      },
-      {
+    },
+    {
       id: "4",
       title: "Anthracnose",
       subtitle: "Anthracnose causes dark, sunken lesions on leaves, stems, and fruits.",
       buttonTxt: "Details",
       img: require("../assets/images/anthredc.jpg"),
       details: "Anthracnose is a fungal disease caused by various species of fungi in the genus Colletotrichum. It affects a wide range of plants, including trees, shrubs, and vegetables. Anthracnose typically appears as dark, sunken lesions on leaves, stems, and fruits. These lesions may have a water-soaked appearance in wet conditions and can eventually lead to tissue death. Anthracnose infections can weaken plants, reduce yields, and affect the quality of fruits and vegetables. Control measures include practicing good garden hygiene, removing and destroying infected plant material, and applying fungicides as needed."
-      },
-      {
+    },
+    {
       id: "1",
       title: "Root Rot",
       subtitle: "Root rot results in rotting roots, often accompanied by wilting, yellowing, or stunted growth above ground.",
       buttonTxt: "Details",
       img: require("../assets/images/rootRot.jpg"),
       details: "Root rot is a common problem caused by various pathogens, including fungi, bacteria, and water molds. It affects a wide range of plants, including trees, shrubs, and vegetables. Root rot typically occurs in waterlogged or poorly drained soil, where oxygen levels are low and pathogens thrive. Symptoms of root rot include rotting roots, often with a foul odor, as well as wilting, yellowing, or stunted growth above ground. Control measures include improving soil drainage, avoiding overwatering, and planting resistant varieties. In severe cases, affected plants may need to be removed and replaced."
-      }
+    }
   ];
-  const handlediseaseCard =(event, item)=>{
+  const handlediseaseCard = (event, item) => {
     navigation.navigate("DiseaseDetailsMain", {
       disease: item,
     });
   }
 
   const Item = ({ item }) => {
-    
+
     return (
       <View style={styles.item}>
-      <View style={styles.textContainer}>
-        <Text style={styles.titleS}>{item.item?.title}</Text>
-        <Text numberOfLines={2} style={styles.subtitleS}>{item.item?.subtitle}</Text>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={(event) => {
-            event.persist(); // Persist the event
-            handlediseaseCard(event, item);
-          }}
-        >
-          <Text style={styles.buttonText}>{item.item?.buttonTxt}</Text>
-        </TouchableOpacity>
+        <View style={styles.textContainer}>
+          <Text style={styles.titleS}>{item.item?.title}</Text>
+          <Text numberOfLines={2} style={styles.subtitleS}>{item.item?.subtitle}</Text>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={(event) => {
+              event.persist(); // Persist the event
+              handlediseaseCard(event, item);
+            }}
+          >
+            <Text style={styles.buttonText}>{item.item?.buttonTxt}</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.imageContainer}>
+          <Image
+            source={item.item?.img}
+            style={styles.image}
+            resizeMode="cover"
+          />
+        </View>
       </View>
-      <View style={styles.imageContainer}>
-        <Image 
-          source={item.item?.img}
-          style={styles.image}
-          resizeMode="cover"
-        />
-      </View>
-    </View>
     );
   };
 
@@ -347,9 +348,49 @@ const ImageClassifier = () => {
         <ActivityIndicator style={styles.indicator} size="large" color="#fff" />
       ) : (
         <View>
-          <View style={{flex:0.91}}>
+          <View style={{ flex: 0.91 }}>
             <Text style={styles.commonDisease}>Common Diseases</Text>
-          <View style={styles.MainSlider}>
+            <View style={styles.MainSlider}>
+              <FlatList
+                data={DATA}
+                horizontal
+                renderItem={(item) => <Item item={item} />}
+                keyExtractor={(item) => item.id}
+                showsHorizontalScrollIndicator={false}
+              />
+            </View>
+            <Text style={styles.commonDisease}>Others</Text>
+            <View style={styles.Gridcontainercontainer}>
+              <View style={styles.row}>
+                
+                  <TouchableOpacity style={styles.item1}>
+                    <Ionicons name="list" size={45}/>
+                    <Text>Scan</Text>
+                  </TouchableOpacity>
+          
+                <TouchableOpacity style={styles.item1}>
+                    <Ionicons name="list" size={45} />
+                    <Text>Scan</Text>
+                  </TouchableOpacity>
+                
+              </View>
+              <View style={styles.row}>
+              <TouchableOpacity style={styles.item1}>
+                    <Ionicons name="list" size={45}/>
+                    <Text>Scan</Text>
+                  </TouchableOpacity>
+          
+                <TouchableOpacity style={styles.item1}>
+                  <ImageBackground 
+                    source={require('../assets/images/leaf-spot.jpg')}
+                  >
+                    <Ionicons name="list" size={45} />
+                    <Text>Scan</Text>
+                    </ImageBackground>
+                  </TouchableOpacity>
+              </View>
+            </View>
+            {/* <View style={styles.MainSlider}>
             <FlatList
               data={DATA}
               horizontal
@@ -357,7 +398,7 @@ const ImageClassifier = () => {
               keyExtractor={(item) => item.id}
               showsHorizontalScrollIndicator={false}
             />
-          </View>
+          </View> */}
           </View>
 
           <View style={styles.buttonContainer}>
@@ -382,14 +423,15 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "space-between",
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
   titleContainer: {
-    height: 100,
+    height: 80,
     width: "100%",
     backgroundColor: "#267a11",
-    marginVertical: 13,
-    paddingLeft:30,
-    paddingRight:10,
+    marginBottom: 13,
+    paddingLeft: 30,
+    paddingRight: 10,
     justifyContent: "space-between",
     alignItems: "center",
     flexDirection: "row",
@@ -401,11 +443,11 @@ const styles = StyleSheet.create({
     padding: 5,
     borderRadius: 50,
   },
-  commonDisease:{
+  commonDisease: {
     fontSize: 20,
     color: "black",
-    marginHorizontal:16,
-    marginVertical:8,
+    marginHorizontal: 16,
+    marginVertical: 8,
     fontFamily: "Merriweather-Bold",
   },
   capturedImage: {
@@ -454,7 +496,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     width: "100%",
-    marginBottom: 30,
   },
   iconButton: {
     backgroundColor: "#267a11",
@@ -477,8 +518,8 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     marginHorizontal: 16,
     borderRadius: 10,
-    height:190,
-    width:358,
+    height: 190,
+    width: 358,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -496,7 +537,7 @@ const styles = StyleSheet.create({
   subtitleS: {
     fontSize: 14,
     color: '#666',
-    flexWrap:'wrap'
+    flexWrap: 'wrap'
   },
   button: {
     backgroundColor: "#4DB129",
@@ -523,6 +564,32 @@ const styles = StyleSheet.create({
   },
 
   // End..
+  Gridcontainer: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    width: '100%',
+    paddingVertical: 10,
+  },
+  item1: {
+    width: 150,
+    height: 130,
+    backgroundColor: '#E6E6E6',
+    justifyContent:'center',
+    alignItems:'center',
+    borderRadius:10
+  },
+  imageBackground:{
+    flex:1,
+    alignItems: 'center',
+    
+  }
 });
 
 export default ImageClassifier;
