@@ -8,6 +8,8 @@ import {
   StyleSheet,
   Platform,
   StatusBar,
+  FlatList,
+  Image,
   ScrollView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -17,12 +19,12 @@ import axios from "axios";
 import { Ionicons } from "@expo/vector-icons";
 import treatmentData from "../assets/treatments.json";
 import { useFonts } from "expo-font";
-import ImageCarousel from "./ImageC";
 
 const ImageClassifier = () => {
   const navigation = useNavigation();
   const [result, setResult] = useState("");
   const [label, setLabel] = useState("");
+  const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [treatment, setTreatment] = useState("");
   const [Symptoms, setSymptoms] = useState("");
@@ -31,21 +33,19 @@ const ImageClassifier = () => {
     "Montserrat-Bold": require("../assets/fonts/Montserrat-Bold.ttf"),
   });
 
-  useEffect(() => {
-    StatusBar.setBarStyle("light-content");
-  }, []);
+  // useEffect(() => {
+  //   StatusBar.setBarStyle("light-content");
+  // }, []);
 
   const navigateToDiagnoseScreen = () => {
     navigation.navigate("DiagnoseScreen");
     setLabel("");
     setLoading(false);
   };
+  const naigatetoList = () => {
+    navigation.navigate("HistoryScreen");
+  };
 
-  const images = [
-    require("../assets/images/pic1.jpg"),
-    require("../assets/images/pic2.jpg"),
-    require("../assets/images/pic3.jpg"),
-  ];
 
   const handleCamera = async () => {
     setLoading(true);
@@ -59,6 +59,7 @@ const ImageClassifier = () => {
     if (!result.canceled) {
       setResult("");
       getPrediction(result);
+      setImage(result.assets[0].uri);
     } else {
       setLoading(false);
     }
@@ -76,6 +77,7 @@ const ImageClassifier = () => {
     if (!result.canceled) {
       setResult("");
       getPrediction(result);
+      setImage(result.assets[0].uri);
     } else {
       setLoading(false);
     }
@@ -189,16 +191,12 @@ const ImageClassifier = () => {
     } else {
       setTreatment("Treatment not found");
     }
-    storeData(predictedLabel, foundDisease.treatment, foundsymptoms.symptoms);
-  };
-
-  const naigatetoList = () => {
-    navigation.navigate("HistoryScreen");
+    storeData(predictedLabel, foundDisease.treatment, foundsymptoms.symptoms, image);
   };
 
   // The AsyncStorage Work.
 
-  const storeData = async (predictedLabel, treatment, Symptoms) => {
+  const storeData = async (predictedLabel, treatment, Symptoms, image) => {
     try {
       // Retrieve existing data
       const existingData = await AsyncStorage.getItem("my-key");
@@ -214,9 +212,8 @@ const ImageClassifier = () => {
         name: predictedLabel,
         treatment: treatment || "",
         Symptoms: Symptoms || "",
+        image: image,
       });
-
-      console.log(newData);
 
       // Store updated data
       await AsyncStorage.setItem("my-key", JSON.stringify(newData));
@@ -230,6 +227,82 @@ const ImageClassifier = () => {
   if (!fontsLoaded && !fontError) {
     return null;
   }
+
+  const DATA = [
+    {
+      id: "5",
+      title: "Powdery Mildew",
+      subtitle: "Powdery mildew appears as white powdery patches on leaves, stems, and flowers.",
+      buttonTxt: "Details",
+      img: require("../assets/images/powderyMildew.jpg"),
+      details: "Powdery mildew is a fungal disease caused by various species of fungi in the order Erysiphales. It thrives in warm, humid conditions and can affect a wide range of plants including roses, cucumbers, squash, and lilacs. The white powdery patches typically develop on the upper surface of leaves, although they can also occur on stems and flowers. As the disease progresses, the affected leaves may become distorted and eventually die. Control measures include planting resistant varieties, ensuring good air circulation around plants, and applying fungicides if necessary."
+      },
+      {
+      id: "2",
+      title: "Leaf Spot",
+      subtitle: "Leaf spot manifests as dark or discolored spots on leaves, often with a defined border.",
+      buttonTxt: "Details",
+      img: require("../assets/images/leaf-spot.jpg"),
+      details: "Leaf spot is a common fungal disease caused by various species of fungi, including Alternaria, Septoria, and Cercospora. It often occurs during periods of high humidity and can affect a wide range of plants, including vegetables, ornamentals, and trees. Leaf spot typically appears as dark or discolored spots on leaves, which may have a defined border. In severe cases, the spots may coalesce, causing extensive leaf damage and defoliation. Control measures include removing and destroying infected plant material, practicing good garden hygiene, and applying fungicides as needed."
+      },
+      {
+      id: "3",
+      title: "Rust",
+      subtitle: "Rust appears as orange, yellow, or brown powdery or pustular growths on leaves and stems.",
+      buttonTxt: "Details",
+      img: require("../assets/images/rust.jpg"),
+      details: "Rust is a fungal disease caused by various species of fungi in the order Pucciniales. It affects a wide range of plants, including ornamentals, vegetables, and grains. Rust typically appears as orange, yellow, or brown powdery or pustular growths on leaves and stems. These growths contain masses of spores that can spread the disease to nearby plants. Rust infections can weaken plants, reduce yields, and affect the aesthetic appeal of ornamental plants. Control measures include planting resistant varieties, removing and destroying infected plant material, and applying fungicides if necessary."
+      },
+      {
+      id: "4",
+      title: "Anthracnose",
+      subtitle: "Anthracnose causes dark, sunken lesions on leaves, stems, and fruits.",
+      buttonTxt: "Details",
+      img: require("../assets/images/anthredc.jpg"),
+      details: "Anthracnose is a fungal disease caused by various species of fungi in the genus Colletotrichum. It affects a wide range of plants, including trees, shrubs, and vegetables. Anthracnose typically appears as dark, sunken lesions on leaves, stems, and fruits. These lesions may have a water-soaked appearance in wet conditions and can eventually lead to tissue death. Anthracnose infections can weaken plants, reduce yields, and affect the quality of fruits and vegetables. Control measures include practicing good garden hygiene, removing and destroying infected plant material, and applying fungicides as needed."
+      },
+      {
+      id: "1",
+      title: "Root Rot",
+      subtitle: "Root rot results in rotting roots, often accompanied by wilting, yellowing, or stunted growth above ground.",
+      buttonTxt: "Details",
+      img: require("../assets/images/rootRot.jpg"),
+      details: "Root rot is a common problem caused by various pathogens, including fungi, bacteria, and water molds. It affects a wide range of plants, including trees, shrubs, and vegetables. Root rot typically occurs in waterlogged or poorly drained soil, where oxygen levels are low and pathogens thrive. Symptoms of root rot include rotting roots, often with a foul odor, as well as wilting, yellowing, or stunted growth above ground. Control measures include improving soil drainage, avoiding overwatering, and planting resistant varieties. In severe cases, affected plants may need to be removed and replaced."
+      }
+  ];
+  const handlediseaseCard =(event, item)=>{
+    navigation.navigate("DiseaseDetailsMain", {
+      disease: item,
+    });
+  }
+
+  const Item = ({ item }) => {
+    
+    return (
+      <View style={styles.item}>
+      <View style={styles.textContainer}>
+        <Text style={styles.titleS}>{item.item?.title}</Text>
+        <Text numberOfLines={2} style={styles.subtitleS}>{item.item?.subtitle}</Text>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={(event) => {
+            event.persist(); // Persist the event
+            handlediseaseCard(event, item);
+          }}
+        >
+          <Text style={styles.buttonText}>{item.item?.buttonTxt}</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.imageContainer}>
+        <Image 
+          source={item.item?.img}
+          style={styles.image}
+          resizeMode="cover"
+        />
+      </View>
+    </View>
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -274,9 +347,19 @@ const ImageClassifier = () => {
         <ActivityIndicator style={styles.indicator} size="large" color="#fff" />
       ) : (
         <View>
-          <View style={{ flex: 0.9 }}>
-            <ImageCarousel images={images} />
+          <View style={{flex:0.91}}>
+            <Text style={styles.commonDisease}>Common Diseases</Text>
+          <View style={styles.MainSlider}>
+            <FlatList
+              data={DATA}
+              horizontal
+              renderItem={(item) => <Item item={item} />}
+              keyExtractor={(item) => item.id}
+              showsHorizontalScrollIndicator={false}
+            />
           </View>
+          </View>
+
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.iconButton} onPress={handleCamera}>
               <Ionicons name="camera" size={34} color="white" />
@@ -302,10 +385,9 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     height: 100,
-    width: "95%",
+    width: "100%",
     backgroundColor: "#267a11",
-    borderRadius: 25,
-    margin: 10,
+    marginVertical: 13,
     paddingLeft:30,
     paddingRight:10,
     justifyContent: "space-between",
@@ -318,6 +400,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#548054",
     padding: 5,
     borderRadius: 50,
+  },
+  commonDisease:{
+    fontSize: 20,
+    color: "black",
+    marginHorizontal:16,
+    marginVertical:8,
+    fontFamily: "Merriweather-Bold",
   },
   capturedImage: {
     width: "100%",
@@ -380,6 +469,60 @@ const styles = StyleSheet.create({
   indicator: {
     flex: 1,
   },
+
+  // Item List styling
+  item: {
+    backgroundColor: "#E6E6E6",
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+    borderRadius: 10,
+    height:190,
+    width:358,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  textContainer: {
+    flex: 1,
+    marginRight: 20,
+  },
+  titleS: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    color: '#333',
+  },
+  subtitleS: {
+    fontSize: 14,
+    color: '#666',
+    flexWrap:'wrap'
+  },
+  button: {
+    backgroundColor: "#4DB129",
+    width: 90,
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: 6,
+    marginTop: 10,
+  },
+  buttonText: {
+    color: "white",
+    fontWeight: 'bold',
+  },
+  imageContainer: {
+    width: 80,
+    height: 80,
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+  },
+
+  // End..
 });
 
 export default ImageClassifier;

@@ -69,43 +69,39 @@ const History = () => {
           ]);
     }
   };
-  
-  return (
-      <View style={styles.container}>
-        <View style={styles.innerContainer}>
-            <Text style={styles.heading}>Saved Diseases</Text>
-            <TouchableOpacity onPress={clearData}>
-                <Ionicons name="trash" size={30}/>
-            </TouchableOpacity>
-        </View>
-      <FlatList
-  data={savedData}
-  renderItem={({ item }) => (
-    <View style={styles.flatlistCont}>
-        <Image 
-        source={require('../assets/images/disease-1.jpg')}
-            style={{
-                height:100,
-                width:100,
-                borderRadius:50,
-                marginRight:15
-            }}
-        />
-       
-      
-      {typeof item.Symptoms === 'string' && typeof item.treatment === 'string' && (
-        <View>
-            <Text>{item.name}</Text>
-          <Text numberOfLines={2}>Symptoms: {item.Symptoms}....</Text>
-          <Text numberOfLines={2}>Treatment: {item.treatment}....</Text>
-        </View>
-        
 
-      )}
-    </View>
-  )}
-  keyExtractor={(item, index) => index.toString()}
-/>
+  const handleItemPress = (item) => {
+    navigation.navigate('DiseaseDetails', { disease: item });
+  };
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.heading}>Saved Diseases</Text>
+        <TouchableOpacity onPress={clearData}>
+          <Ionicons name="trash" size={30} color="white" />
+        </TouchableOpacity>
+      </View>
+      <FlatList
+        data={savedData.reverse()}
+        renderItem={({ item }) => (
+          <TouchableOpacity onPress={() => handleItemPress(item)}>
+          <View style={styles.itemContainer}>
+            <Image
+              source={{uri: item.image}}
+              style={styles.image}
+            />
+            <View style={styles.textContainer}>
+              <Text style={styles.name}>{item.name}</Text>
+              <Text  numberOfLines={2} style={styles.symptoms}>Symptoms: {item.Symptoms}</Text>
+              <Text  numberOfLines={2} style={styles.treatment}>Treatment: {item.treatment}</Text>
+            </View>
+          </View>
+          </TouchableOpacity>
+        )}
+        keyExtractor={(item, index) => index.toString()}
+        showsVerticalScrollIndicator={false}
+      />
     </View>
   );
 };
@@ -113,31 +109,52 @@ const History = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    backgroundColor: '#fff',
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    
+    backgroundColor: '#bf9522',
+    paddingHorizontal: 20,
+    paddingTop: 40,
+    paddingBottom: 20,
   },
-  flatlistCont: {
-    margin: 10,
-    padding:12,
-    backgroundColor: 'red',
+  heading: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+  itemContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#f0f0f0',
     borderRadius: 10,
-    flexDirection:'row'
+    marginHorizontal: 20,
+    marginVertical: 10,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
   },
-  innerContainer:{
-    width:'100%',
-    backgroundColor:'#bf9522',
-    height:70,
-    paddingHorizontal:10,
-    flexDirection:'row',
-    justifyContent:'space-between',
-    alignItems:'center'
+  image: {
+    height: 100,
+    width: 100,
+    borderRadius: 50,
+    marginRight: 15,
   },
-  heading:{
-    fontSize:20,
-    fontWeight:'bold',
-    color:'#000'
-  }
+  textContainer: {
+    flex: 1,
+  },
+  name: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  symptoms: {
+    fontSize: 16,
+  },
+  treatment: {
+    fontSize: 16,
+  },
 });
 
 export default History;
